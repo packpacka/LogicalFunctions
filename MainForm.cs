@@ -12,6 +12,14 @@ namespace LogicalFunctions
 {
   public partial class MainForm : Form
   {
+    /// <summary>
+    /// Индекс операции
+    /// </summary>
+    int operation = 1;
+
+    //переменная - нейрон
+    private Neuron _neur = null;
+
     public MainForm()
     {
       InitializeComponent();
@@ -25,9 +33,6 @@ namespace LogicalFunctions
       //установка названий 3 и 4 колонок
       dataGridViewTableLogic.Columns[2].Name = "d";
       dataGridViewTableLogic.Columns[3].Name = "Y";
-
-      //всплывающие подсказки
-      //  toolTipObj.SetToolTip(this.buttonCalc, "Вычислить");
 
       //настройки элементов для ввода весов и порога
       int numericMin = -99;
@@ -48,17 +53,33 @@ namespace LogicalFunctions
       numericUpDownTeta.DecimalPlaces = numericDecimalPlaces;
       numericUpDownTeta.Increment = numericInc;
 
-      // протокол выполнения в listbox
-      _processVipolneniyaF = 1; //шаг 1 - вычисление функции И
-      listBoxProtocol.Items.Add("Подберите параметры нейрона, моделирующего \"И\"");
-
+      ChangeOparation();
     }
 
-    //переменная - нейрон
-    private Neuron _neur = null;
-    // флаг с номером шага процесса выполнения
-    private int _processVipolneniyaF = 0;
+    private void ChangeOparation()
+    {
+      switch (operation)
+      {
+        case 1:
+          {
+            listBoxProtocol.Items.Add("Подберите параметры нейрона, моделирующего операцию \"AND\"");
+            break;
+          }
+        case 2:
+          {
+            listBoxProtocol.Items.Add("Подберите параметры нейрона, моделирующего операцию \"OR\"");
+            break;
+          }
+        case 3:
+          {
+            listBoxProtocol.Items.Add("Подберите параметры нейрона, моделирующего операцию \"XOR\"");
+            break;
+          }
+      }
 
+      //формирование колонки со значениями функции логическое И (2 аргумент - номер функции)
+      SetLogicArgResultToTable(dataGridViewTableLogic, operation, 0, 1);
+    }
 
     /// <summary>
     /// Установка размеров и числа строк и ячеек элемента dataGridView
@@ -156,7 +177,33 @@ namespace LogicalFunctions
           }
         case 2:
           {
-
+            for (int j = 0; j < Math.Pow(2, (lastCellInputArg - startCellInputArg + 1)); j++) // строки
+            {
+              Boolean output = (dgrView.Rows[j].Cells[startCellInputArg].Value.ToString() == "1") ? true : false;
+              // столбцы
+              for (int i = startCellInputArg + 1; i <= lastCellInputArg; i++)
+              {
+                Boolean currentArg = (dgrView.Rows[j].Cells[i].Value.ToString() == "1") ? true : false;
+                output = (output || currentArg) ? true : false;
+              }
+              dgrView.Rows[j].Cells[lastCellInputArg + 1].Value = (output) ? 1 : 0;
+            }
+            break;
+          }
+        case 3:
+          {
+            for (int j = 0; j < Math.Pow(2, (lastCellInputArg - startCellInputArg + 1)); j++) // строки
+            {
+              Boolean output = (dgrView.Rows[j].Cells[startCellInputArg].Value.ToString() == "1") ? true : false;
+              // столбцы
+              for (int i = startCellInputArg + 1; i <= lastCellInputArg; i++)
+              {
+                Boolean currentArg = (dgrView.Rows[j].Cells[i].Value.ToString() == "1") ? true : false;
+                output = (output ^ currentArg) ? true : false;
+              }
+              dgrView.Rows[j].Cells[lastCellInputArg + 1].Value = (output) ? 1 : 0;
+            }
+            break;
           }
       }
     }
@@ -246,19 +293,39 @@ namespace LogicalFunctions
     private void buttonCalc_Click(object sender, EventArgs e)
     {
       double[] weight = { (double)numericUpDownW1.Value, (double)numericUpDownW2.Value }; //переменная - массив весов
-      switch (_processVipolneniyaF)
+      // просчет заданной логической функции в сети
+      // с заданными параметрами весов и порога
+      // обучение сети, второй параметр смещение=-порог
+      TrainNet(weight, -(double)numericUpDownTeta.Value);
+      // занесение данных в таблицу, изменение параметра
+      // выполненных заданий
+      ChangeTableResult();
+    }
+
+    private void radioButtonAND_CheckedChanged(object sender, EventArgs e)
+    {
+      if (radioButtonAND.Checked)
       {
-        case 1: // шаг 1 - функция И
-          {
-            // просчет заданной логической функции в сети
-            // с заданными параметрами весов и порога
-            // обучение сети, второй параметр смещение=-порог
-            TrainNet(weight, -(double)numericUpDownTeta.Value);
-            // занесение данных в таблицу, изменение параметра
-            // выполненных заданий
-            ChangeTableResult();
-            break;
-          }
+        operation = 1;
+        ChangeOparation();
+      }
+    }
+
+    private void radioButtonOR_CheckedChanged(object sender, EventArgs e)
+    {
+      if (radioButtonOR.Checked)
+      {
+        operation = 2;
+        ChangeOparation();
+      }
+    }
+
+    private void radioButtonXOR_CheckedChanged(object sender, EventArgs e)
+    {
+      if (radioButtonXOR.Checked)
+      {
+        operation = 3;
+        ChangeOparation();
       }
     }
 

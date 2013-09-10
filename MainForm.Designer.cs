@@ -55,6 +55,7 @@
       this.buttonCalc.TabIndex = 17;
       this.buttonCalc.Text = "Решить";
       this.buttonCalc.UseVisualStyleBackColor = true;
+      this.buttonCalc.Click += new System.EventHandler(this.buttonCalc_Click);
       // 
       // dataGridViewTableLogic
       // 
@@ -68,12 +69,12 @@
       // listBoxProtocol
       // 
       this.listBoxProtocol.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.listBoxProtocol.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.listBoxProtocol.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.listBoxProtocol.FormattingEnabled = true;
-      this.listBoxProtocol.ItemHeight = 21;
-      this.listBoxProtocol.Location = new System.Drawing.Point(0, 259);
+      this.listBoxProtocol.ItemHeight = 17;
+      this.listBoxProtocol.Location = new System.Drawing.Point(0, 198);
       this.listBoxProtocol.Name = "listBoxProtocol";
-      this.listBoxProtocol.Size = new System.Drawing.Size(485, 130);
+      this.listBoxProtocol.Size = new System.Drawing.Size(485, 191);
       this.listBoxProtocol.TabIndex = 15;
       // 
       // numericUpDownW2
@@ -133,35 +134,37 @@
       // radioButtonOR
       // 
       this.radioButtonOR.AutoSize = true;
-      this.radioButtonOR.Location = new System.Drawing.Point(349, 168);
+      this.radioButtonOR.Location = new System.Drawing.Point(375, 168);
       this.radioButtonOR.Name = "radioButtonOR";
       this.radioButtonOR.Size = new System.Drawing.Size(41, 17);
       this.radioButtonOR.TabIndex = 18;
-      this.radioButtonOR.TabStop = true;
       this.radioButtonOR.Text = "OR";
       this.radioButtonOR.UseVisualStyleBackColor = true;
+      this.radioButtonOR.CheckedChanged += new System.EventHandler(this.radioButtonOR_CheckedChanged);
       // 
       // radioButtonAND
       // 
       this.radioButtonAND.AutoSize = true;
-      this.radioButtonAND.Location = new System.Drawing.Point(349, 191);
+      this.radioButtonAND.Checked = true;
+      this.radioButtonAND.Location = new System.Drawing.Point(321, 168);
       this.radioButtonAND.Name = "radioButtonAND";
       this.radioButtonAND.Size = new System.Drawing.Size(48, 17);
       this.radioButtonAND.TabIndex = 19;
       this.radioButtonAND.TabStop = true;
       this.radioButtonAND.Text = "AND";
       this.radioButtonAND.UseVisualStyleBackColor = true;
+      this.radioButtonAND.CheckedChanged += new System.EventHandler(this.radioButtonAND_CheckedChanged);
       // 
       // radioButtonXOR
       // 
       this.radioButtonXOR.AutoSize = true;
-      this.radioButtonXOR.Location = new System.Drawing.Point(349, 214);
+      this.radioButtonXOR.Location = new System.Drawing.Point(422, 168);
       this.radioButtonXOR.Name = "radioButtonXOR";
       this.radioButtonXOR.Size = new System.Drawing.Size(47, 17);
       this.radioButtonXOR.TabIndex = 20;
-      this.radioButtonXOR.TabStop = true;
       this.radioButtonXOR.Text = "XOR";
       this.radioButtonXOR.UseVisualStyleBackColor = true;
+      this.radioButtonXOR.CheckedChanged += new System.EventHandler(this.radioButtonXOR_CheckedChanged);
       // 
       // MainForm
       // 
